@@ -284,6 +284,8 @@ public class LightAnalyzerActivity
         sb.append("\nLight--");
         sb.append("\nNumber of readings: " + numLightReadings);
         sb.append("\nAmbient light level (lux): " + lux);
+        sb.append( "\nCurrent Location:  " +  (lux < 1000.0 ? "Indoor" : "Outdoor").toString());
+        //sb.append(lux < 1000.0 ? "Indoor" : "Outdoor" );
 
         // Update the text view in the main UI thread
         handler.post(new Runnable() {
