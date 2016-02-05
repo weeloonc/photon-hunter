@@ -28,6 +28,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Stop Light sampling" />
 
+    <!-- Location status -->
+    <TextView
+        android:id="@+id/PA1Activity_TextView_Status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#44cc00"
+        android:text="" />
+
     <!-- Light sensor Readings -->
     <TextView
         android:id="@+id/PA1Activity_TextView_Light"

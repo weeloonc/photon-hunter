@@ -37,6 +37,13 @@ public class LightAnalyzerActivity
         extends Activity
         implements SensorEventListener {
 
+    // Threshold for indoor status
+    private static final double THRESHOLD = 1500.0;
+    // Label message for indoor status
+    private static final String STATUS_INDOOR = "Indoor";
+    // Label message for outdoor status
+    private static final String STATUS_OUTDOOR = "Outdoor";
+
     // DDMS Log Tag.
     private static final String TAG = "LightAnalyzerActivity";
     // Light sensor log file output stream.
@@ -45,6 +52,8 @@ public class LightAnalyzerActivity
     private Button startLightButton;
     // Stop light sensor sampling button.
     private Button stopLightButton;
+    // Location status textview.
+    private TextView statusTextView;
     // Light sensor reading textview.
     private TextView lightTextView;
     // Sensor Manager.
@@ -232,6 +241,7 @@ public class LightAnalyzerActivity
         // Get references to GUI widgets
         startLightButton = (Button) findViewById(R.id.PA1Activity_Button_StartLight);
         stopLightButton = (Button) findViewById(R.id.PA1Activity_Button_StopLight);
+        statusTextView = (TextView) findViewById(R.id.PA1Activity_TextView_Status);
         lightTextView = (TextView) findViewById(R.id.PA1Activity_TextView_Light);
 
         // Disable the stop button
@@ -277,23 +287,26 @@ public class LightAnalyzerActivity
     /**
      * Helper method that updates the light text view.
      */
-    private void updateLightTextView(long timestamp, float lux) {
+    private void updateLightTextView(long timestamp, final float lux) {
 
         // Light sensor reading details
         final StringBuilder sb = new StringBuilder();
         sb.append("\nLight--");
         sb.append("\nNumber of readings: " + numLightReadings);
         sb.append("\nAmbient light level (lux): " + lux);
-        sb.append( "\nCurrent Location:  " +  (lux < 1000.0 ? "Indoor" : "Outdoor").toString());
-        //sb.append(lux < 1000.0 ? "Indoor" : "Outdoor" );
 
         // Update the text view in the main UI thread
         handler.post(new Runnable() {
             @Override
             public void run() {
+                statusTextView.setText("Current location: " + getLocationStatus(lux));
                 lightTextView.setText(sb.toString());
             }
         });
+    }
+
+    private String getLocationStatus(float lux) {
+        return lux < THRESHOLD ? STATUS_INDOOR : STATUS_OUTDOOR;
     }
 
     /**
